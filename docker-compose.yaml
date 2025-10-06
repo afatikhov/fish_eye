@@ -1,0 +1,42 @@
+services:
+  fish_eye:
+    build: ./
+    container_name: fish_eye_service
+    ports:
+      - "8038:8038"
+    env_file:
+      - ./.env
+    environment:
+      - PYTHONPATH=/app/src
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    command: >
+      sh -c "alembic -c src/alembic.ini upgrade head & python3 ./src/main.py"
+    networks:
+      - fish_eye_network
+
+  db:
+    image: postgres:17
+    container_name: fish_eye_db
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: fish_eye_db
+    volumes:
+      - ./database:/var/lib/postgresql/data
+    ports:
+      - "5438:5438"
+    networks:
+      - fish_eye_network
+
+networks:
+  fish_eye_network:
+    driver: bridge
+
+volumes:
+  db:

@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from exceptions.custom_exceptions_http import NotAddedException
 from infrastructure.db.pg_repo.camera_repo import CameraRepo
 from schemas import CameraAdd, CameraDelete
 
@@ -24,6 +25,7 @@ class CameraService:
                             session: AsyncSession):
         result = await self.camera_repo.delete(session=session,
                                                **camera_delete.model_dump())
+
         await session.commit()
 
         return result

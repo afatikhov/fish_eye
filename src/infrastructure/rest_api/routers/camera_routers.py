@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, Body
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from exceptions.exceptions_handler import http_exception_handler
 from infrastructure.rest_api.depends.camera_service_depends import get_camera_service
 from infrastructure.rest_api.depends.pg_depends import get_pg_db
 from schemas import CameraAdd, CameraDelete
@@ -9,6 +10,7 @@ from services.camera_service import CameraService
 camera_router = APIRouter()
 
 @camera_router.post("/add-camera")
+@http_exception_handler
 async def add_camera(camera_add: CameraAdd=Body(...),
                      camera_service: CameraService=Depends(get_camera_service),
                      session: AsyncSession=Depends(get_pg_db)):
@@ -17,12 +19,14 @@ async def add_camera(camera_add: CameraAdd=Body(...),
     return result
 
 @camera_router.get("/get-all-cameras")
+@http_exception_handler
 async def get_all_cameras(camera_service: CameraService=Depends(get_camera_service),
         session: AsyncSession=Depends(get_pg_db)):
     result = await camera_service.get_all_cameras(session=session)
     return result
 
 @camera_router.delete("/delete-camera-by-id")
+@http_exception_handler
 async def delete_camera(camera_delete: CameraDelete=Body(...),
                         camera_service: CameraService=Depends(get_camera_service),
                         session: AsyncSession=Depends(get_pg_db)):

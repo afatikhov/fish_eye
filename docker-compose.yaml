@@ -30,7 +30,7 @@ services:
     volumes:
       - ./database:/var/lib/postgresql/data
     ports:
-      - "5438:5438"
+      - "5438:5432"
     networks:
       - fish_eye_network
 

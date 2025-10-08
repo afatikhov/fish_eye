@@ -28,7 +28,8 @@ class BaseRepo:
         return result
 
     async def get(self, session: AsyncSession, **filters) -> Optional[BaseModel]:
-        query = select(self.model).filter_by(**filters)
+        conditions = [getattr(self.model, key) == value for key, value in filters.items()]
+        query = select(self.model).where(*conditions)
         db_response = await session.execute(query)
         result = db_response.scalar_one_or_none()
 

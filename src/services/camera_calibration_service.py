@@ -30,5 +30,7 @@ class CameraCalibrationService:
         )
         result = await self.camera_calibration_info_repo.add(session=session,
                                                        **camera_calibration_write_data.model_dump())
-
+        await session.commit()
         return result
+
+    # async def get_camera_cal

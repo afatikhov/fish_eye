@@ -12,5 +12,9 @@ class CameraCalibrationData(BaseModel):
     calibration_flags: int
     num_images: int
 
+    model_config = {
+        "from_attributes": True
+    }
+
 class CameraCalibrationWriteData(CameraCalibrationData):
     camera_id: int

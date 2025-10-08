@@ -13,7 +13,6 @@ class CameraCalibrationInfo(BaseModel):
     camera_id: Mapped[int] = mapped_column(Integer, ForeignKey("cameras.id"),
                                            unique=True)
 
-
     dim_width: Mapped[int] = mapped_column(Integer, nullable=False,
                                            unique=False)
     dim_height: Mapped[int] = mapped_column(Integer, nullable=False,
